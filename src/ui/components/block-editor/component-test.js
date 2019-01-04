@@ -1,4 +1,4 @@
-import { render } from "@ember/test-helpers";
+import { click, render } from "@ember/test-helpers";
 import { setupRenderingTest } from "ember-qunit";
 import hbs from "htmlbars-inline-precompile";
 import { module, test } from "qunit";
@@ -51,5 +51,34 @@ module("Integration | Component | block-editor", function(hooks) {
     `);
 
     assert.equal(this.element.querySelectorAll(".TextBlock").length, 1);
+  });
+
+  test("calls onBlockDataChange action when a second block is added", async function(assert) {
+    assert.expect(4);
+
+    const initialData = {
+      topLevelBlocks: ["1"],
+      blockData: {
+        "1": { body: "" }
+      }
+    };
+
+    this.set("blockData", initialData);
+
+    this.set("handleBlockDataChange", newData => {
+      // The existing block stays as it is
+      assert.equal(newData.topLevelBlocks[0], "1");
+      assert.deepEqual(newData.blockData["1"], initialData.blockData["1"]);
+
+      // There is a new block
+      assert.equal(newData.topLevelBlocks.length, 2);
+      assert.ok(newData.blockData[newData.topLevelBlocks[1]]);
+    });
+
+    await render(hbs`
+      <BlockEditor @blockData={{blockData}} @onBlockDataChange={{action handleBlockDataChange}} />
+    `);
+
+    await click(".BlockEditor-addBelowButton");
   });
 });

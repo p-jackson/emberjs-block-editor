@@ -1,5 +1,8 @@
 {{#each blocks as |blockData|}}
   <div class="BlockEditor-blockContainer">
     <TextBlock @blockData={{blockData}} />
+    <div class="BlockEditor-layoutEditButtons">
+      <button {{action "addBlockBelow" blockData}} class="BlockEditor-addBelowButton">+</button>
+    </div>
   </div>
 {{/each}}

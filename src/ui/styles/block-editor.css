@@ -2,3 +2,24 @@
   max-width: 950px;
   margin: 20px auto;
 }
+
+.BlockEditor-addBelowButton {
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.BlockEditor-layoutEditButtons {
+  text-align: center;
+  position: relative;
+}
+
+.BlockEditor-layoutEditButtons::before {
+  content: "";
+  display: block;
+  position: absolute;
+  background: #dadada;
+  height: 1px;
+  width: 100%;
+  top: 50%;
+  z-index: -1;
+}
