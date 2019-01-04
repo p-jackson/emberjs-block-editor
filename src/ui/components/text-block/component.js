@@ -4,4 +4,8 @@ import Component from "@ember/component";
 @classNames("TextBlock")
 export default class TextBlockComponent extends Component {
   @attribute contenteditable = true;
+
+  focusOut() {
+    this.onBlockDataChange({ body: this.element.textContent });
+  }
 }

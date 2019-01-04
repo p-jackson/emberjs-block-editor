@@ -1,4 +1,4 @@
-import { render } from "@ember/test-helpers";
+import { blur, fillIn, render } from "@ember/test-helpers";
 import { setupRenderingTest } from "ember-qunit";
 import hbs from "htmlbars-inline-precompile";
 import { module, test } from "qunit";
@@ -24,5 +24,23 @@ module("Integration | Component | text-block", function(hooks) {
     `);
 
     assert.equal(this.element.textContent.trim(), "<b>body text</b>");
+  });
+
+  test("calls onBlockDataChange when user types", async function(assert) {
+    assert.expect(1);
+
+    this.set("blockData", { body: "initial" });
+    this.set("handleBlockDataChange", newData => {
+      assert.deepEqual(newData, {
+        body: "changed"
+      });
+    });
+
+    await render(hbs`
+      <TextBlock @blockData={{blockData}} @onBlockDataChange={{handleBlockDataChange}} />
+    `);
+
+    await fillIn("[contenteditable]", "changed");
+    await blur("[contenteditable]");
   });
 });

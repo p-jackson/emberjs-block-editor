@@ -1,4 +1,4 @@
-import { click, render } from "@ember/test-helpers";
+import { blur, click, fillIn, render } from "@ember/test-helpers";
 import { setupRenderingTest } from "ember-qunit";
 import hbs from "htmlbars-inline-precompile";
 import { module, test } from "qunit";
@@ -76,9 +76,36 @@ module("Integration | Component | block-editor", function(hooks) {
     });
 
     await render(hbs`
-      <BlockEditor @blockData={{blockData}} @onBlockDataChange={{action handleBlockDataChange}} />
+      <BlockEditor @blockData={{blockData}} @onBlockDataChange={{handleBlockDataChange}} />
     `);
 
     await click(".BlockEditor-addBelowButton");
+  });
+
+  test("calls onBlockDataChange action when a text block is edited", async function(assert) {
+    assert.expect(1);
+
+    this.set("blockData", {
+      topLevelBlocks: ["1"],
+      blockData: {
+        "1": { body: "initial" }
+      }
+    });
+
+    this.set("handleBlockDataChange", newData => {
+      assert.deepEqual(newData, {
+        topLevelBlocks: ["1"],
+        blockData: {
+          "1": { body: "changed" }
+        }
+      });
+    });
+
+    await render(hbs`
+      <BlockEditor @blockData={{blockData}} @onBlockDataChange={{handleBlockDataChange}} />
+    `);
+
+    await fillIn("[contenteditable]", "changed");
+    await blur("[contenteditable]");
   });
 });

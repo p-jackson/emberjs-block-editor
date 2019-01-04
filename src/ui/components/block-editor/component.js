@@ -31,4 +31,15 @@ export default class BlockEditorComponent extends Component {
       }
     });
   }
+
+  @action
+  handleBlockDataChange(changedId, newData) {
+    this.onBlockDataChange({
+      ...this.blockData,
+      blockData: {
+        ...this.blockData.blockData,
+        [changedId]: newData
+      }
+    });
+  }
 }

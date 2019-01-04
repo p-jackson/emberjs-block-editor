@@ -1,6 +1,6 @@
 {{#each blocks as |blockData|}}
   <div class="BlockEditor-blockContainer">
-    <TextBlock @blockData={{blockData}} />
+    <TextBlock @blockData={{blockData}} @onBlockDataChange={{action "handleBlockDataChange" blockData.id}} />
     <div class="BlockEditor-layoutEditButtons">
       <button {{action "addBlockBelow" blockData}} class="BlockEditor-addBelowButton">+</button>
     </div>
