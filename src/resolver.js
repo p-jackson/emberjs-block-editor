@@ -1,6 +1,6 @@
-import Resolver from 'ember-resolver/resolvers/fallback';
-import buildResolverConfig from 'ember-resolver/ember-config';
-import config from '../config/environment';
+import Resolver from "ember-resolver/resolvers/fallback";
+import buildResolverConfig from "ember-resolver/ember-config";
+import config from "../config/environment";
 
 let moduleConfig = buildResolverConfig(config.modulePrefix);
 /*
