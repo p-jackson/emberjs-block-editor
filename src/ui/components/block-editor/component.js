@@ -4,6 +4,8 @@ import Component from "@ember/component";
 
 @classNames("BlockEditor")
 export default class BlockEditorComponent extends Component {
+  selectedBlock = null;
+
   @computed("blockData")
   get blocks() {
     return this.blockData.topLevelBlocks.map(id => ({
@@ -41,5 +43,37 @@ export default class BlockEditorComponent extends Component {
         [changedId]: newData
       }
     });
+  }
+
+  @action
+  handleBlockSelected(block) {
+    event._selectingBlock = true;
+    this.set("selectedBlock", block);
+  }
+
+  @action
+  handleBubbleClick() {
+    if (!event._selectingBlock) this.set("selectedBlock", null);
+  }
+
+  @action
+  handleBlockDelete() {
+    if (!this.selectedBlock) return;
+
+    const id = this.selectedBlock.id;
+    const index = this.blockData.topLevelBlocks.indexOf(id);
+
+    const newBlockData = { ...this.blockData.blockData };
+    delete newBlockData[id];
+
+    this.onBlockDataChange({
+      topLevelBlocks: [
+        ...this.blockData.topLevelBlocks.slice(0, index),
+        ...this.blockData.topLevelBlocks.slice(index + 1)
+      ],
+      blockData: newBlockData
+    });
+
+    this.set("selectedBlock", null);
   }
 }

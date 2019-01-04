@@ -1,6 +1,19 @@
+@import "./block-property-bar.css";
+
 .BlockEditor {
+  display: flex;
+  flex-direction: row;
+}
+
+.BlockEditor-content {
+  flex: 1;
   max-width: 950px;
-  margin: 20px auto;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.BlockEditor-sidebar {
+  flex: 0 0 300px;
 }
 
 .BlockEditor-addBelowButton {

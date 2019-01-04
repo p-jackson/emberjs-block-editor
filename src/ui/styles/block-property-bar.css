@@ -1,0 +1,22 @@
+.BlockPropertyBar {
+  position: fixed;
+  width: 300px;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #ececec;
+  box-shadow: 0 0 10px -5px #a7a7a7;
+  border-left: 1px solid #d5d5d5;
+  padding: 20px;
+}
+
+.BlockPropertyBar-title {
+  font-weight: 600;
+  font-size: 14px;
+  padding-bottom: 20px;
+}
+
+.BlockPropertyBar-deleteButton {
+  font: inherit;
+  cursor: pointer;
+}

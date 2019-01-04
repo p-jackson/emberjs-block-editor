@@ -1,8 +1,16 @@
-{{#each blocks as |blockData|}}
-  <div class="BlockEditor-blockContainer">
-    <TextBlock @blockData={{blockData}} @onBlockDataChange={{action "handleBlockDataChange" blockData.id}} />
+<div class="BlockEditor-content" {{action "handleBubbleClick" on="click"}}>
+  {{#each blocks as |blockData|}}
+    <div class="BlockEditor-blockContainer" {{action "handleBlockSelected" blockData on="click"}}
+      {{action "handleBlockSelected" blockData on="focusIn"}}>
+      <TextBlock @blockData={{blockData}} @onBlockDataChange={{action "handleBlockDataChange" blockData.id}} />
+    </div>
     <div class="BlockEditor-layoutEditButtons">
       <button {{action "addBlockBelow" blockData}} class="BlockEditor-addBelowButton">+</button>
     </div>
+  {{/each}}
+</div>
+{{#if selectedBlock}}
+  <div class="BlockEditor-sidebar">
+    <BlockPropertyBar @onDelete={{action "handleBlockDelete"}} />
   </div>
-{{/each}}
+{{/if}}

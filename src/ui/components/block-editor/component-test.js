@@ -83,8 +83,6 @@ module("Integration | Component | block-editor", function(hooks) {
   });
 
   test("calls onBlockDataChange action when a text block is edited", async function(assert) {
-    assert.expect(1);
-
     this.set("blockData", {
       topLevelBlocks: ["1"],
       blockData: {
@@ -107,5 +105,24 @@ module("Integration | Component | block-editor", function(hooks) {
 
     await fillIn("[contenteditable]", "changed");
     await blur("[contenteditable]");
+  });
+
+  test("clicking in a block selects the selected block", async function(assert) {
+    this.set("blockData", {
+      topLevelBlocks: ["1"],
+      blockData: {
+        "1": { body: "body data" }
+      }
+    });
+
+    await render(hbs`
+      <BlockEditor @blockData={{blockData}} />
+    `);
+
+    assert.notOk(this.element.querySelector(".BlockPropertyBar"));
+
+    await click(".TextBlock");
+
+    assert.ok(this.element.querySelector(".BlockPropertyBar"));
   });
 });
