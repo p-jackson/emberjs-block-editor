@@ -1,0 +1,19 @@
+{{#each blocks as |blockData|}}
+  {{#if blockData.id}}
+    <div class="ColumnsBlock-blockContainer" {{action "handleBlockSelected" blockData.id on="click"}}
+      {{action "handleBlockSelected" blockData.id on="focusIn"}}>
+
+      {{#if blockData.isTextBlock}}
+        <TextBlock @blockData={{blockData.blockData}} @onBlockDataChange={{action "handleBlockDataChange" blockData.id}} />
+      {{/if}}
+      {{#if blockData.isImageBlock}}
+        <ImageBlock @blockData={{blockData.blockData}} @onBlockDataChange={{action "handleBlockDataChange" blockData.id}} />
+      {{/if}}
+
+    </div>
+  {{else}}
+    <div class="ColumnsBlock-emptyContainer">
+      <PopupButton @options={{addBlockOptions}} @onOptionClick={{action "addBlock" blockData.index}}>+</PopupButton>
+    </div>
+  {{/if}}
+{{/each}}

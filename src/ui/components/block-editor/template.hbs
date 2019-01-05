@@ -9,6 +9,10 @@
       {{#if blockData.isImageBlock}}
         <ImageBlock @blockData={{blockData.blockData}} @onBlockDataChange={{action "handleBlockDataChange" blockData.id}} />
       {{/if}}
+      {{#if blockData.isColumnsBlock}}
+        <ColumnsBlock @blockId={{blockData.id}} @editorData={{editorData}} @blockData={{blockData.blockData}}
+          @onEditorStateChange={{action "handleColumnChangesEditorState"}} @onBlockSelected={{action "handleColumnBlockSelected"}} />
+      {{/if}}
 
     </div>
     <div class="BlockEditor-layoutEditButtons">

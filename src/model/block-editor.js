@@ -1,3 +1,4 @@
+import ColumnsBlock from "./columns-block";
 import ImageBlock from "./image-block";
 import TextBlock from "./text-block";
 
@@ -22,8 +23,7 @@ export default class BlockEditor {
     const position = this.topLevelBlocks.indexOf(blockId) + 1;
     const newBlockId = Math.random().toString(10);
 
-    const newBlockData =
-      newBlockType === "Text Block" ? new TextBlock() : new ImageBlock();
+    const newBlockData = createBlockData(newBlockType);
 
     const newState = new BlockEditor({
       topLevelBlocks: [
@@ -34,6 +34,30 @@ export default class BlockEditor {
       blockData: {
         ...this.blockData,
         [newBlockId]: newBlockData
+      },
+      blockType: {
+        ...this.blockType,
+        [newBlockId]: newBlockType
+      }
+    });
+
+    return { newState, newBlockId };
+  }
+
+  addBlockToColumn(columnBlockId, columnIndex, newBlockType) {
+    const newBlockId = Math.random().toString(10);
+
+    const newBlockData = createBlockData(newBlockType);
+
+    const newState = new BlockEditor({
+      topLevelBlocks: this.topLevelBlocks,
+      blockData: {
+        ...this.blockData,
+        [newBlockId]: newBlockData,
+        [columnBlockId]: this.blockData[columnBlockId].setColumn(
+          columnIndex,
+          newBlockId
+        )
       },
       blockType: {
         ...this.blockType,
@@ -72,5 +96,16 @@ export default class BlockEditor {
         [id]: data
       }
     });
+  }
+}
+
+function createBlockData(newBlockType) {
+  switch (newBlockType) {
+    case "Text Block":
+      return new TextBlock();
+    case "Image Block":
+      return new ImageBlock();
+    case "Columns":
+      return new ColumnsBlock();
   }
 }

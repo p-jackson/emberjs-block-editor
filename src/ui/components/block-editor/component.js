@@ -5,7 +5,12 @@ import Component from "@ember/component";
 @classNames("BlockEditor")
 export default class BlockEditorComponent extends Component {
   selectedBlockId = null;
-  addBlockOptions = ["Text Block", "Image Block"];
+  addBlockOptions = ["Text Block", "Image Block", "Columns"];
+
+  @computed("blockData")
+  get editorData() {
+    return this.blockData;
+  }
 
   @computed("blockData")
   get blocks() {
@@ -14,7 +19,8 @@ export default class BlockEditorComponent extends Component {
       blockData: this.blockData.blockData[id],
       blockType: this.blockData.blockType[id],
       isTextBlock: this.blockData.blockType[id] === "Text Block",
-      isImageBlock: this.blockData.blockType[id] === "Image Block"
+      isImageBlock: this.blockData.blockType[id] === "Image Block",
+      isColumnsBlock: this.blockData.blockType[id] === "Columns"
     }));
   }
 
@@ -46,6 +52,12 @@ export default class BlockEditorComponent extends Component {
   }
 
   @action
+  handleColumnChangesEditorState({ newState, newBlockId }) {
+    this.onBlockDataChange(newState);
+    this.set("selectedBlockId", newBlockId);
+  }
+
+  @action
   handleSelectedBlockDataChange(newData) {
     this.onBlockDataChange(
       this.blockData.setBlock(this.selectedBlockId, newData)
@@ -54,7 +66,15 @@ export default class BlockEditorComponent extends Component {
 
   @action
   handleBlockSelected(blockId) {
-    event._selectingBlock = true;
+    // Skip if a block in a column has already been clicked
+    if (!event._selectingBlock) {
+      event._selectingBlock = true;
+      this.set("selectedBlockId", blockId);
+    }
+  }
+
+  @action
+  handleColumnBlockSelected(blockId) {
     this.set("selectedBlockId", blockId);
   }
 
