@@ -9,7 +9,8 @@ module("Integration | Component | block-editor", function(hooks) {
   test("contains no blocks when block data is empty", async function(assert) {
     this.set("blockData", {
       topLevelBlocks: [],
-      blockData: {}
+      blockData: {},
+      blockType: {}
     });
 
     await render(hbs`
@@ -25,7 +26,8 @@ module("Integration | Component | block-editor", function(hooks) {
   test("contains 3 blocks when blockData contains 3 blocks", async function(assert) {
     this.set("blockData", {
       topLevelBlocks: ["1", "2", "3"],
-      blockData: {}
+      blockData: {},
+      blockType: {}
     });
 
     await render(hbs`
@@ -43,6 +45,9 @@ module("Integration | Component | block-editor", function(hooks) {
       topLevelBlocks: ["1"],
       blockData: {
         "1": { body: "" }
+      },
+      blockType: {
+        "1": "Text Block"
       }
     });
 
@@ -60,6 +65,9 @@ module("Integration | Component | block-editor", function(hooks) {
       topLevelBlocks: ["1"],
       blockData: {
         "1": { body: "" }
+      },
+      blockType: {
+        "1": "Text Block"
       }
     };
 
@@ -79,7 +87,8 @@ module("Integration | Component | block-editor", function(hooks) {
       <BlockEditor @blockData={{blockData}} @onBlockDataChange={{handleBlockDataChange}} />
     `);
 
-    await click(".BlockEditor-addBelowButton");
+    await click(".BlockEditor-layoutEditButtons button");
+    await click(`.BlockEditor-layoutEditButtons [data-testid="Text Block"]`);
   });
 
   test("calls onBlockDataChange action when a text block is edited", async function(assert) {
@@ -87,6 +96,9 @@ module("Integration | Component | block-editor", function(hooks) {
       topLevelBlocks: ["1"],
       blockData: {
         "1": { body: "initial" }
+      },
+      blockType: {
+        "1": "Text Block"
       }
     });
 
@@ -95,6 +107,9 @@ module("Integration | Component | block-editor", function(hooks) {
         topLevelBlocks: ["1"],
         blockData: {
           "1": { body: "changed" }
+        },
+        blockType: {
+          "1": "Text Block"
         }
       });
     });
@@ -112,6 +127,9 @@ module("Integration | Component | block-editor", function(hooks) {
       topLevelBlocks: ["1"],
       blockData: {
         "1": { body: "body data" }
+      },
+      blockType: {
+        "1": "Text Block"
       }
     });
 

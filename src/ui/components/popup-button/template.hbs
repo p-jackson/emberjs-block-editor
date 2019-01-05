@@ -1,0 +1,12 @@
+<button class="PopupButton-button" {{action "handleButtonClick"}}>
+  {{yield}}
+</button>
+{{#if expanded}}
+  <div class="PopupButton-popup">
+    {{#each options as |option|}}
+      <button data-testid={{option}} class="PopupButton-option" {{action "handleOptionClick" option}}>
+        {{option}}
+      </button>
+    {{/each}}
+  </div>
+{{/if}}

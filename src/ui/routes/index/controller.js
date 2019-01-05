@@ -8,6 +8,9 @@ export default class IndexController extends Controller {
       "1": {
         body: "Get started by editing this text or add a new block below"
       }
+    },
+    blockType: {
+      "1": "Text Block"
     }
   };
 

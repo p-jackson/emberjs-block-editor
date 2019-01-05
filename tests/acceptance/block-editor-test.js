@@ -22,7 +22,8 @@ module("Acceptance | block editor", function(hooks) {
     await fillIn(firstTextBlock, "first block");
     await blur(firstTextBlock);
 
-    await click(".BlockEditor-addBelowButton");
+    await click(".BlockEditor-layoutEditButtons button");
+    await click(`.BlockEditor-layoutEditButtons [data-testid="Text Block"]`);
 
     const secondTextBlock = this.element.querySelectorAll(
       "[contenteditable]"

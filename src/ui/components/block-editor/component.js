@@ -4,19 +4,21 @@ import Component from "@ember/component";
 
 @classNames("BlockEditor")
 export default class BlockEditorComponent extends Component {
-  selectedBlock = null;
+  selectedBlockId = null;
+  addBlockOptions = ["Text Block"];
 
   @computed("blockData")
   get blocks() {
     return this.blockData.topLevelBlocks.map(id => ({
       id,
-      ...this.blockData.blockData[id]
+      blockData: this.blockData.blockData[id],
+      blockType: this.blockData.blockType[id]
     }));
   }
 
   @action
-  addBlockBelow(block) {
-    const position = this.blockData.topLevelBlocks.indexOf(block.id) + 1;
+  addBlockBelow(blockId, blockType) {
+    const position = this.blockData.topLevelBlocks.indexOf(blockId) + 1;
     const newId = Math.random().toString(10);
 
     this.onBlockDataChange({
@@ -30,6 +32,9 @@ export default class BlockEditorComponent extends Component {
         [newId]: {
           body: "new body"
         }
+      },
+      blockType: {
+        [newId]: blockType
       }
     });
   }
@@ -46,32 +51,36 @@ export default class BlockEditorComponent extends Component {
   }
 
   @action
-  handleBlockSelected(block) {
+  handleBlockSelected(blockId) {
     event._selectingBlock = true;
-    this.set("selectedBlock", block);
+    this.set("selectedBlockId", blockId);
   }
 
   @action
   handleBubbleClick() {
-    if (!event._selectingBlock) this.set("selectedBlock", null);
+    if (!event._selectingBlock) this.set("selectedBlockId", null);
   }
 
   @action
   handleBlockDelete() {
-    if (!this.selectedBlock) return;
+    if (!this.selectedBlockId) return;
 
-    const id = this.selectedBlock.id;
+    const id = this.selectedBlockId;
     const index = this.blockData.topLevelBlocks.indexOf(id);
 
     const newBlockData = { ...this.blockData.blockData };
     delete newBlockData[id];
+
+    const newBlockType = { ...this.blockData.blockType };
+    delete newBlockType[id];
 
     this.onBlockDataChange({
       topLevelBlocks: [
         ...this.blockData.topLevelBlocks.slice(0, index),
         ...this.blockData.topLevelBlocks.slice(index + 1)
       ],
-      blockData: newBlockData
+      blockData: newBlockData,
+      blockType: newBlockType
     });
 
     this.set("selectedBlock", null);

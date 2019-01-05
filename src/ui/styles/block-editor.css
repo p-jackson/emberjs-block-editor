@@ -1,4 +1,5 @@
 @import "./block-property-bar.css";
+@import "./popup-button.css";
 
 .BlockEditor {
   display: flex;
@@ -14,11 +15,6 @@
 
 .BlockEditor-sidebar {
   flex: 0 0 300px;
-}
-
-.BlockEditor-addBelowButton {
-  font-size: inherit;
-  cursor: pointer;
 }
 
 .BlockEditor-layoutEditButtons {
