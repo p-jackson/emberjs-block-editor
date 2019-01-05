@@ -1,18 +1,9 @@
 import { action } from "@ember-decorators/object";
 import Controller from "@ember/controller";
+import BlockEditor from "../../../model/block-editor";
 
 export default class IndexController extends Controller {
-  blockData = {
-    topLevelBlocks: ["1"],
-    blockData: {
-      "1": {
-        body: "Get started by editing this text or add a new block below"
-      }
-    },
-    blockType: {
-      "1": "Text Block"
-    }
-  };
+  blockData = new BlockEditor();
 
   @action
   handleBlockDataChange(newBlockData) {

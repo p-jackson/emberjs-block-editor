@@ -30,53 +30,26 @@ export default class BlockEditorComponent extends Component {
 
   @action
   addBlockBelow(blockId, blockType) {
-    const position = this.blockData.topLevelBlocks.indexOf(blockId) + 1;
-    const newId = Math.random().toString(10);
+    const { newState, newBlockId } = this.blockData.addBlockBelow(
+      blockId,
+      blockType
+    );
 
-    const newBlockData =
-      blockType === "Text Block"
-        ? { body: "new body" }
-        : { url: null, fullHeight: null, displayHeight: null };
+    this.onBlockDataChange(newState);
 
-    this.onBlockDataChange({
-      topLevelBlocks: [
-        ...this.blockData.topLevelBlocks.slice(0, position),
-        newId,
-        ...this.blockData.topLevelBlocks.slice(position)
-      ],
-      blockData: {
-        ...this.blockData.blockData,
-        [newId]: newBlockData
-      },
-      blockType: {
-        ...this.blockData.blockType,
-        [newId]: blockType
-      }
-    });
-
-    this.set("selectedBlockId", newId);
+    this.set("selectedBlockId", newBlockId);
   }
 
   @action
   handleBlockDataChange(changedId, newData) {
-    this.onBlockDataChange({
-      ...this.blockData,
-      blockData: {
-        ...this.blockData.blockData,
-        [changedId]: newData
-      }
-    });
+    this.onBlockDataChange(this.blockData.setBlock(changedId, newData));
   }
 
   @action
   handleSelectedBlockDataChange(newData) {
-    this.onBlockDataChange({
-      ...this.blockData,
-      blockData: {
-        ...this.blockData.blockData,
-        [this.selectedBlockId]: newData
-      }
-    });
+    this.onBlockDataChange(
+      this.blockData.setBlock(this.selectedBlockId, newData)
+    );
   }
 
   @action
@@ -94,24 +67,9 @@ export default class BlockEditorComponent extends Component {
   handleBlockDelete() {
     if (!this.selectedBlockId) return;
 
-    const id = this.selectedBlockId;
-    const index = this.blockData.topLevelBlocks.indexOf(id);
+    const newState = this.blockData.deleteBlock(this.selectedBlockId);
 
-    const newBlockData = { ...this.blockData.blockData };
-    delete newBlockData[id];
-
-    const newBlockType = { ...this.blockData.blockType };
-    delete newBlockType[id];
-
-    this.onBlockDataChange({
-      topLevelBlocks: [
-        ...this.blockData.topLevelBlocks.slice(0, index),
-        ...this.blockData.topLevelBlocks.slice(index + 1)
-      ],
-      blockData: newBlockData,
-      blockType: newBlockType
-    });
-
+    this.onBlockDataChange(newState);
     this.set("selectedBlockId", null);
   }
 }

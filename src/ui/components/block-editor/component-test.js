@@ -2,16 +2,21 @@ import { blur, click, fillIn, render } from "@ember/test-helpers";
 import { setupRenderingTest } from "ember-qunit";
 import hbs from "htmlbars-inline-precompile";
 import { module, test } from "qunit";
+import BlockEditor from "../../../../src/model/block-editor";
+import TextBlock from "../../../../src/model/text-block";
 
 module("Integration | Component | block-editor", function(hooks) {
   setupRenderingTest(hooks);
 
   test("contains no blocks when block data is empty", async function(assert) {
-    this.set("blockData", {
-      topLevelBlocks: [],
-      blockData: {},
-      blockType: {}
-    });
+    this.set(
+      "blockData",
+      new BlockEditor({
+        topLevelBlocks: [],
+        blockData: {},
+        blockType: {}
+      })
+    );
 
     await render(hbs`
       <BlockEditor @blockData={{blockData}} />
@@ -24,11 +29,14 @@ module("Integration | Component | block-editor", function(hooks) {
   });
 
   test("contains 3 blocks when blockData contains 3 blocks", async function(assert) {
-    this.set("blockData", {
-      topLevelBlocks: ["1", "2", "3"],
-      blockData: {},
-      blockType: {}
-    });
+    this.set(
+      "blockData",
+      new BlockEditor({
+        topLevelBlocks: ["1", "2", "3"],
+        blockData: {},
+        blockType: {}
+      })
+    );
 
     await render(hbs`
       <BlockEditor @blockData={{blockData}} />
@@ -41,15 +49,18 @@ module("Integration | Component | block-editor", function(hooks) {
   });
 
   test("contains a text block", async function(assert) {
-    this.set("blockData", {
-      topLevelBlocks: ["1"],
-      blockData: {
-        "1": { body: "" }
-      },
-      blockType: {
-        "1": "Text Block"
-      }
-    });
+    this.set(
+      "blockData",
+      new BlockEditor({
+        topLevelBlocks: ["1"],
+        blockData: {
+          "1": new TextBlock("")
+        },
+        blockType: {
+          "1": "Text Block"
+        }
+      })
+    );
 
     await render(hbs`
       <BlockEditor @blockData={{blockData}} />
@@ -61,15 +72,15 @@ module("Integration | Component | block-editor", function(hooks) {
   test("calls onBlockDataChange action when a second block is added", async function(assert) {
     assert.expect(4);
 
-    const initialData = {
+    const initialData = new BlockEditor({
       topLevelBlocks: ["1"],
       blockData: {
-        "1": { body: "" }
+        "1": new TextBlock("")
       },
       blockType: {
         "1": "Text Block"
       }
-    };
+    });
 
     this.set("blockData", initialData);
 
@@ -92,26 +103,32 @@ module("Integration | Component | block-editor", function(hooks) {
   });
 
   test("calls onBlockDataChange action when a text block is edited", async function(assert) {
-    this.set("blockData", {
-      topLevelBlocks: ["1"],
-      blockData: {
-        "1": { body: "initial" }
-      },
-      blockType: {
-        "1": "Text Block"
-      }
-    });
-
-    this.set("handleBlockDataChange", newData => {
-      assert.deepEqual(newData, {
+    this.set(
+      "blockData",
+      new BlockEditor({
         topLevelBlocks: ["1"],
         blockData: {
-          "1": { body: "changed" }
+          "1": new TextBlock("initial")
         },
         blockType: {
           "1": "Text Block"
         }
-      });
+      })
+    );
+
+    this.set("handleBlockDataChange", newData => {
+      assert.deepEqual(
+        newData,
+        new BlockEditor({
+          topLevelBlocks: ["1"],
+          blockData: {
+            "1": new TextBlock("changed")
+          },
+          blockType: {
+            "1": "Text Block"
+          }
+        })
+      );
     });
 
     await render(hbs`
@@ -123,15 +140,18 @@ module("Integration | Component | block-editor", function(hooks) {
   });
 
   test("clicking in a block selects the selected block", async function(assert) {
-    this.set("blockData", {
-      topLevelBlocks: ["1"],
-      blockData: {
-        "1": { body: "body data" }
-      },
-      blockType: {
-        "1": "Text Block"
-      }
-    });
+    this.set(
+      "blockData",
+      new BlockEditor({
+        topLevelBlocks: ["1"],
+        blockData: {
+          "1": new TextBlock("body data")
+        },
+        blockType: {
+          "1": "Text Block"
+        }
+      })
+    );
 
     await render(hbs`
       <BlockEditor @blockData={{blockData}} />

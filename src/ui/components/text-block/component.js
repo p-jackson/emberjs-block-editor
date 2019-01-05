@@ -7,7 +7,7 @@ export default class TextBlockComponent extends Component {
   @attribute tabIndex = 0;
 
   focusOut() {
-    this.onBlockDataChange({ body: this.element.textContent });
+    this.onBlockDataChange(this.blockData.setBody(this.element.textContent));
     return true;
   }
 }

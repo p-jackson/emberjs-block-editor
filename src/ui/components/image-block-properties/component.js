@@ -1,7 +1,6 @@
 import { classNames } from "@ember-decorators/component";
 import { action, computed } from "@ember-decorators/object";
 import Component from "@ember/component";
-import { Promise } from "rsvp";
 
 @classNames("ImageBlockProperties")
 export default class ImageBlockPropertiesComponent extends Component {
@@ -24,15 +23,7 @@ export default class ImageBlockPropertiesComponent extends Component {
     const file = event.currentTarget.files[0];
     if (!file) return;
 
-    const url = await fileToDataUrl(file);
-    const fullHeight = await fileToImageHeight(file);
-
-    this.onChange({
-      ...this.blockData,
-      url,
-      fullHeight,
-      displayHeight: fullHeight
-    });
+    this.onChange(await this.blockData.setImage(file));
   }
 
   @action
@@ -41,31 +32,6 @@ export default class ImageBlockPropertiesComponent extends Component {
       (event.currentTarget.valueAsNumber * this.blockData.fullHeight) / 100
     );
 
-    this.onChange({
-      ...this.blockData,
-      displayHeight
-    });
+    this.onChange(this.blockData.setDisplayHeight(displayHeight));
   }
-}
-
-function fileToDataUrl(file) {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-
-    reader.addEventListener("load", () => {
-      resolve(reader.result);
-    });
-
-    reader.readAsDataURL(file);
-  });
-}
-
-function fileToImageHeight(file) {
-  return new Promise(resolve => {
-    const img = new Image();
-    img.onload = function() {
-      resolve(this.height);
-    };
-    img.src = URL.createObjectURL(file);
-  });
 }
