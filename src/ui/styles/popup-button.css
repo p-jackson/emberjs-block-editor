@@ -19,11 +19,15 @@
   position: absolute;
   width: 200px;
   left: calc(50% - 100px);
-  border: 1px solid #f2f2f2;
-  box-shadow: 0 1px 2px #ededed;
+  border: 1px solid #9c9c9c;
+  box-shadow: 0 1px 2px #393939;
   padding: 5px;
   border-radius: 4px;
   margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
 }
 
 .PopupButton-popup::before {
@@ -34,7 +38,7 @@
   height: 14px;
   background: white;
   left: calc(50% - 7px);
-  border-left: 1px solid #e1e1e1;
+  border-left: 1px solid #9c9c9c;
   transform: rotate(45deg);
-  border-top: 1px solid #e1e1e1;
+  border-top: 1px solid #9c9c9c;
 }

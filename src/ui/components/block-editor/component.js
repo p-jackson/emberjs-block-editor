@@ -5,21 +5,38 @@ import Component from "@ember/component";
 @classNames("BlockEditor")
 export default class BlockEditorComponent extends Component {
   selectedBlockId = null;
-  addBlockOptions = ["Text Block"];
+  addBlockOptions = ["Text Block", "Image Block"];
 
   @computed("blockData")
   get blocks() {
     return this.blockData.topLevelBlocks.map(id => ({
       id,
       blockData: this.blockData.blockData[id],
-      blockType: this.blockData.blockType[id]
+      blockType: this.blockData.blockType[id],
+      isTextBlock: this.blockData.blockType[id] === "Text Block",
+      isImageBlock: this.blockData.blockType[id] === "Image Block"
     }));
+  }
+
+  @computed("blockData", "selectedBlockId")
+  get selectedBlockData() {
+    return this.blockData.blockData[this.selectedBlockId];
+  }
+
+  @computed("blockData", "selectedBlockId")
+  get selectedBlockType() {
+    return this.blockData.blockType[this.selectedBlockId];
   }
 
   @action
   addBlockBelow(blockId, blockType) {
     const position = this.blockData.topLevelBlocks.indexOf(blockId) + 1;
     const newId = Math.random().toString(10);
+
+    const newBlockData =
+      blockType === "Text Block"
+        ? { body: "new body" }
+        : { url: null, fullHeight: null, displayHeight: null };
 
     this.onBlockDataChange({
       topLevelBlocks: [
@@ -29,14 +46,15 @@ export default class BlockEditorComponent extends Component {
       ],
       blockData: {
         ...this.blockData.blockData,
-        [newId]: {
-          body: "new body"
-        }
+        [newId]: newBlockData
       },
       blockType: {
+        ...this.blockData.blockType,
         [newId]: blockType
       }
     });
+
+    this.set("selectedBlockId", newId);
   }
 
   @action
@@ -46,6 +64,17 @@ export default class BlockEditorComponent extends Component {
       blockData: {
         ...this.blockData.blockData,
         [changedId]: newData
+      }
+    });
+  }
+
+  @action
+  handleSelectedBlockDataChange(newData) {
+    this.onBlockDataChange({
+      ...this.blockData,
+      blockData: {
+        ...this.blockData.blockData,
+        [this.selectedBlockId]: newData
       }
     });
   }
@@ -83,6 +112,6 @@ export default class BlockEditorComponent extends Component {
       blockType: newBlockType
     });
 
-    this.set("selectedBlock", null);
+    this.set("selectedBlockId", null);
   }
 }

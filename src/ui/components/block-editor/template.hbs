@@ -2,7 +2,14 @@
   {{#each blocks as |blockData|}}
     <div class="BlockEditor-blockContainer" {{action "handleBlockSelected" blockData.id on="click"}}
       {{action "handleBlockSelected" blockData.id on="focusIn"}}>
-      <TextBlock @blockData={{blockData.blockData}} @onBlockDataChange={{action "handleBlockDataChange" blockData.id}} />
+
+      {{#if blockData.isTextBlock}}
+        <TextBlock @blockData={{blockData.blockData}} @onBlockDataChange={{action "handleBlockDataChange" blockData.id}} />
+      {{/if}}
+      {{#if blockData.isImageBlock}}
+        <ImageBlock @blockData={{blockData.blockData}} @onBlockDataChange={{action "handleBlockDataChange" blockData.id}} />
+      {{/if}}
+
     </div>
     <div class="BlockEditor-layoutEditButtons">
       <PopupButton @options={{addBlockOptions}} @onOptionClick={{action "addBlockBelow" blockData.id}}>+</PopupButton>
@@ -11,6 +18,7 @@
 </div>
 {{#if selectedBlockId}}
   <div class="BlockEditor-sidebar">
-    <BlockPropertyBar @onDelete={{action "handleBlockDelete"}} />
+    <BlockPropertyBar @blockData={{selectedBlockData}} @blockType={{selectedBlockType}} @onChange={{action "handleSelectedBlockDataChange"}}
+      @onDelete={{action "handleBlockDelete"}} />
   </div>
 {{/if}}

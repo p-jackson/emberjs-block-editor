@@ -1,0 +1,15 @@
+.ImageBlockProperties {
+  padding-bottom: 20px;
+}
+
+.ImageBlockProperties label {
+  display: block;
+}
+
+.ImageBlockProperties input {
+  padding-bottom: 20px;
+}
+
+.ImageBlockProperties input[type="file"] {
+  font: inherit;
+}

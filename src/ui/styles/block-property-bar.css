@@ -1,3 +1,5 @@
+@import "./image-block-properties.css";
+
 .BlockPropertyBar {
   position: fixed;
   width: 300px;
@@ -14,9 +16,4 @@
   font-weight: 600;
   font-size: 14px;
   padding-bottom: 20px;
-}
-
-.BlockPropertyBar-deleteButton {
-  font: inherit;
-  cursor: pointer;
 }

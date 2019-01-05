@@ -34,7 +34,7 @@ module("Acceptance | block editor", function(hooks) {
     // Focus text block to show block properties in side bar
     await focus(secondTextBlock);
 
-    await click(".BlockPropertyBar-deleteButton");
+    await click(`[data-testid="deleteBlockButton"]`);
 
     assert.ok(this.element.textContent.includes("first block"));
     assert.notOk(this.element.textContent.includes("second block"));

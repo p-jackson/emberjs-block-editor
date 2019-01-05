@@ -1,0 +1,5 @@
+<label for="imageSelectorInput">Choose Image:</label>
+<input id="imageSelectorInput" type="file" accept="image/*" onchange={{action "handleImageChange"}} />
+<label for="imageSizeInput">Image Size:</label>
+<input id="imageSizeInput" type="range" min=5 max=100 value={{heightPercent}} oninput={{action "handleSizeChange"}}
+  disabled={{hasNoImage}} />

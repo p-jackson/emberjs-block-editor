@@ -1,4 +1,7 @@
-<div class="BlockPropertyBar-title">Text Block Properties</div>
-<button class="BlockPropertyBar-deleteButton" {{action "handleDeleteClick"}}>
+<div class="BlockPropertyBar-title">{{blockType}} Properties</div>
+{{#if isImageBlock}}
+  <ImageBlockProperties @blockData={{blockData}} @onChange={{onChange}} />
+{{/if}}
+<RegularButton @onclick={{action "handleDeleteClick"}} @testid="deleteBlockButton">
   Delete
-</button>
+</RegularButton>

@@ -1,5 +1,6 @@
 @import "./block-property-bar.css";
 @import "./popup-button.css";
+@import "./image-block.css";
 
 .BlockEditor {
   display: flex;

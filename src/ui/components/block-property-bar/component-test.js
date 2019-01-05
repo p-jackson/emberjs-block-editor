@@ -17,6 +17,6 @@ module("Integration | Component | block-property-bar", function(hooks) {
       <BlockPropertyBar @onDelete={{handleDelete}} />
     `);
 
-    await click(".BlockPropertyBar-deleteButton");
+    await click(`[data-testid="deleteBlockButton"`);
   });
 });
